@@ -49,9 +49,81 @@ Oracle 和 Postgres 之間的以下差異:
 | NLS_DATE_FORMAT | DateStyle | DateStyle | 這些是設置顯示日期資訊格式的參數。 Postgres 的預設日期格式 DateStyle 參數為 ISO。而 Oracle 的預設日期格式則是由NLS_TERRITORY 參數繼承而來。 |
 
  
-*  挑戰和限制，這些必須被其他替代方案手動重寫
-   *  
+# 待處理的問題和限制，這些必須被其他替代方案手動重寫
+1.  欄位約束功能 
+2.  資料刪除語法 
+3. 刪除資料庫物件
+4. Dual table
+5. 空字串和 NULL 值
+6. Oracle  Federation 與 Postgres 的外部表（Foreign Data Wrappers）
+7. GRANT 語法
+8. 階層式查詢
+9. Join 語法搭配 (+)
+10. 檢查 NOT NULL
+11. 套件語法（Package）支援
+12. PL/SQL 到 PL/PgSQL 的改寫
+13. 遠端資料庫物件
+14. ROWID、CTID 和識別欄位（Identity Columns）
+15. 序號物件（Sequences）
+16. SUBSTR 函數
+17. 同義詞（Synonyms
+18. SYSDATE
+19. TO_DATE 函數
+20. 交易控制
+21. 交易錯誤的例外處理
+
+1.  欄位約束功能 
+    *   Oracle 允許它們的用戶隨心所欲地停用和啟用欄位約束功能，但一般不建議這種操作關聯式資料庫的作法，如果操作不夠謹慎，可能會導致資料毀損。
+    *  使用者能夠在 Postgres 中，透過 SET CONSTRAINTS 指令，指定延遲欄位約束功能（DEFERRED）。延遲欄位約束功能用來指定欄位約束的運作時機。如果在 Oracle 中欄位約束沒有預先啟用延遲功能，則必須先將該欄位約束刪除再重設啟用（部份情況下可以直接變更欄位約束啟用延遲功能設定）。
+    *  建議：為避免潛在錯誤或資料損壞，建議將用於刪除或重建欄位約束的指令，以 BEGIN/COMMIT 程式區塊將其框列成一筆交易，以便在設定期間鎖定資料表。  
+  
+2.  資料刪除語法 
+       * 在 Postgres 中，DELETE 語法必需搭配 FROM 關鍵字一起使用，但在 Oracle 中則不用。  
+       * Oracle:
+          ```
+              delete table_name where column_name='AAAA';
+          ```
+       * Postgres:   
+          ```
+              delete  from table_name where column_name='AAAA';
+          ```
+3. 刪除資料庫物件
+     *  在 Postgres 中，只有物件擁有者和「超級使用者」有刪除物件的權限。
+     *  物件擁有者的群組能透過授權被賦予，但卻無法授權刪除資料庫物件的操作。
+     *  如果原先搭配 Oracle 應用程式中仰賴非擁有者刪除物件的功能，會需要重新設計/設定相關功能。
+  
+4. Dual table
+    * 在 Postgres 中， SELECT 語法不強制搭配 FROM 子句，因此 FROM DUAL 這個語法在 Postgres 中並不必要，一般情況下能直接能移除。
+    * 如果使用 Postgres 時仍需要 Dual 表，可以創建視觀表代替。   
+    * https://dba.stackexchange.com/questions/187800/dual-table-postgres-doesnt-return-timestamp
+    * 
+5. 空字串和 NULL 值
+   *  空字串在 Oracle 中被視為 NULL ，在 Postgres 則否。在 Oracle 中，使用者能夠利用 IS NULL 條件式來檢查字串是否為空字串，但在 Postgres 中，IS NULL 對空字串的傳回值皆為 FALSE。（運算子為 NULL 時，則傳回 TRUE）
+6. Oracle  Federation 與 Postgres 的外部表（Foreign Data Wrappers）
+7. GRANT 語法
+8. 階層式查詢
+9. Join 語法搭配 (+)
+10. 檢查 NOT NULL
+11. 套件語法（Package）支援
+12. PL/SQL 到 PL/PgSQL 的改寫
+13. 遠端資料庫物件
+14. ROWID、CTID 和識別欄位（Identity Columns）
+15. 序號物件（Sequences）
+16. SUBSTR 函數
+17. 同義詞（Synonyms
+18. SYSDATE
+19. TO_DATE 函數
+20. 交易控制
+21. 交易錯誤的例外處理
+
  
+
+ 
+
+
+1.  
+
+
 
  
  
