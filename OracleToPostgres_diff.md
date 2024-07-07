@@ -68,12 +68,30 @@ Oracle 和 Postgres 之間的以下差異:
 16. 序號物件（Sequences）
 17. SUBSTR 函數
 18. 同義詞（Synonyms
-19. SYSDATE
+19. SYSDATE、CURRENT_TIMESTAMP
 20. TO_DATE 函數
 21. 交易控制
 22. 交易錯誤的例外處理
 23. DECODE 
 24. Subquery in FROM
+25. to_number函数
+26. instr函数
+27. 字符串连接符( || )
+28. substr
+29. length
+30. trim/ltrim/rtrim函数
+31. NLSSORT
+32. NLS_INITCAP/ NLS_LOWER/ NLS_UPPER
+33. regexp_replace
+34. regexp_substr
+35. regexp_instr
+36. regexp_like
+37. NVL2
+38. LNNVL
+39. BITAND
+40. REMAINDER
+41. 
+
 ----
 
 1.  欄位約束功能 
@@ -128,14 +146,22 @@ Oracle 和 Postgres 之間的以下差異:
 14. 遠端資料庫物件
 15. ROWID、CTID 和識別欄位（Identity Columns）
 16. 序號物件（Sequences）
-17. SUBSTR 函數
-18. 同義詞（Synonyms
-19. SYSDATE
-20. TO_DATE 函數
-21. 交易控制
-22. 交易錯誤的例外處理
-23. DECODE 
-24. Subquery in FROM  
+    * Oracle:  
+      ```
+      Sequence_name.nextval
+      ```
+    * PostgreSQL:
+      ````
+      Nextval(‘sequence_name’)
+      ````
+17. SUBSTR 函數  
+18. 同義詞（Synonyms  
+19. SYSDATE  
+20. TO_DATE 函數  
+21. 交易控制  
+22. 交易錯誤的例外處理  
+23. DECODE   
+24. Subquery in FROM   
     * a query for Oracle:  
           ```
                SELECT * FROM (SELECT * FROM table_a);
@@ -144,7 +170,23 @@ Oracle 和 Postgres 之間的以下差異:
           ```
                 SELECT * FROM (SELECT * FROM table_a) AS foo
           ```           
-25.    
+25. to_number函数
+26. instr函数
+27. 字符串连接符( || )
+28. substr
+29. length
+30. trim/ltrim/rtrim函数
+31. NLSSORT
+32. NLS_INITCAP/ NLS_LOWER/ NLS_UPPER
+33. regexp_replace
+34. regexp_substr
+35. regexp_instr
+36. regexp_like
+37. NVL2
+38. LNNVL
+39. BITAND
+40. REMAINDER
+41.     
  
 
 
