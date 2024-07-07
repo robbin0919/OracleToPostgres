@@ -55,22 +55,26 @@ Oracle 和 Postgres 之間的以下差異:
 3. 刪除資料庫物件
 4. Dual table
 5. 空字串和 NULL 值
-6. Oracle  Federation 與 Postgres 的外部表（Foreign Data Wrappers）
-7. GRANT 語法
-8. 階層式查詢
-9. Join 語法搭配 (+)
-10. 檢查 NOT NULL
-11. 套件語法（Package）支援
-12. PL/SQL 到 PL/PgSQL 的改寫
-13. 遠端資料庫物件
-14. ROWID、CTID 和識別欄位（Identity Columns）
-15. 序號物件（Sequences）
-16. SUBSTR 函數
-17. 同義詞（Synonyms
-18. SYSDATE
-19. TO_DATE 函數
-20. 交易控制
-21. 交易錯誤的例外處理
+6. NULL判斷函數
+7. Oracle  Federation 與 Postgres 的外部表（Foreign Data Wrappers）
+8. GRANT 語法
+9. 階層式查詢
+10. Join 語法搭配 (+)
+11. 檢查 NOT NULL
+12. 套件語法（Package）支援
+13. PL/SQL 到 PL/PgSQL 的改寫
+14. 遠端資料庫物件
+15. ROWID、CTID 和識別欄位（Identity Columns）
+16. 序號物件（Sequences）
+17. SUBSTR 函數
+18. 同義詞（Synonyms
+19. SYSDATE
+20. TO_DATE 函數
+21. 交易控制
+22. 交易錯誤的例外處理
+23. DECODE 
+24. Subquery in FROM
+----
 
 1.  欄位約束功能 
     *   Oracle 允許它們的用戶隨心所欲地停用和啟用欄位約束功能，但一般不建議這種操作關聯式資料庫的作法，如果操作不夠謹慎，可能會導致資料毀損。
@@ -99,31 +103,57 @@ Oracle 和 Postgres 之間的以下差異:
     * 
 5. 空字串和 NULL 值
    *  空字串在 Oracle 中被視為 NULL ，在 Postgres 則否。在 Oracle 中，使用者能夠利用 IS NULL 條件式來檢查字串是否為空字串，但在 Postgres 中，IS NULL 對空字串的傳回值皆為 FALSE。（運算子為 NULL 時，則傳回 TRUE）
-6. Oracle  Federation 與 Postgres 的外部表（Foreign Data Wrappers）
-7. GRANT 語法
-8. 階層式查詢
-9. Join 語法搭配 (+)
-10. 檢查 NOT NULL
-11. 套件語法（Package）支援
-12. PL/SQL 到 PL/PgSQL 的改寫
-13. 遠端資料庫物件
-14. ROWID、CTID 和識別欄位（Identity Columns）
-15. 序號物件（Sequences）
-16. SUBSTR 函數
-17. 同義詞（Synonyms
-18. SYSDATE
-19. TO_DATE 函數
-20. 交易控制
-21. 交易錯誤的例外處理
-
+6. NULL判斷函數
+   * Oracle
+     * NULL判斷函數是 nvl(A, B) 和 coalesce 兩個函數。
+     * nvl(A, B) 是判斷如果A不為NULL，則回傳A, 否則回傳B。參數需要是相同類型的，或者可以自動轉換成相同類型的, 否則需要明確轉換。 
+     * coalese 參數可以有多個，傳回第一個不為NULL的參數。而參數必須為相同類型的 ，不會自動轉換。
+   * PostgreSQL
+     * 沒有nvl函數。但是有coalesce函數。用法和Oracle的一樣。
+     * 可以使用coalesce來轉換Oracle的nvl和coalesce。參數需要使用相同的類型，或可以轉換成相同類型。否則需要手動轉換。
+7. Oracle  Federation 與 Postgres 的外部表（Foreign Data Wrappers）
+8. GRANT 語法
+9. 階層式查詢
+10. Join 語法搭配 (+)
+11. 檢查 NOT NULL
+    * Oracle 18 以前的版本， NULL 是 NULL、空字串是 NULL，但是 PostgreSQL 並不接受空字串是 NULL
+    * 在 Oracle 18 已經改了  https://docs.oracle.com/en/database/oracle/oracle-database/18/sqlrf/Nulls.html#GUID-B0BA4751-9D88-426A-84AD-BCDBD5584071
+    * 
+12. 套件語法（Package）支援
+    * Postgres 不支援 packages 語法，
+    * 但能利用 Schema 特性，將函數（user-defined function）和程序（stored procedure）組織起來。
+    * 也能夠使用 Orafce 相容套件，提供部份的 Oracle 內建 package，
+    * 或使用 EDB Postgres Advanced Server ，內建相容 package 與 package 語法支援。
+13. PL/SQL 到 PL/PgSQL 的改寫
+14. 遠端資料庫物件
+15. ROWID、CTID 和識別欄位（Identity Columns）
+16. 序號物件（Sequences）
+17. SUBSTR 函數
+18. 同義詞（Synonyms
+19. SYSDATE
+20. TO_DATE 函數
+21. 交易控制
+22. 交易錯誤的例外處理
+23. DECODE 
+24. Subquery in FROM  
+    * a query for Oracle:  
+          ```
+               SELECT * FROM (SELECT * FROM table_a);
+          ``` 
+    * a query for PostgreSQL :  
+          ```
+                SELECT * FROM (SELECT * FROM table_a) AS foo
+          ```           
+25.    
  
 
- 
 
-
-1.  
-
-
-
- 
- 
+參考資料來源： 
+* https://severalnines.com/blog/migrating-oracle-postgresql-what-you-should-know/
+* https://www.omniwaresoft.com.tw/product-news/edb-news/oracle-to-postgresql-5-steps-3/
+* https://www.cs.cmu.edu/~pmerson/docs/OracleToPostgres.pdf
+* https://wiki.postgresql.org/wiki/Oracle_to_Postgres_Conversion
+* https://developer.aliyun.com/search?k=PostgreSQL%E5%92%8COracle%E7%9A%84SQL%E5%B7%AE%E5%BC%82%E5%88%86%E6%9E%90%E4%B9%8B%E4%BA%94&scene=community&page=1
+* https://rojerchen.blogspot.com/2019/09/postgresql-oraclefdw.html
+* https://www.cnblogs.com/ios9/p/15489894.html
+* 
