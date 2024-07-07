@@ -173,19 +173,30 @@ Oracle 和 Postgres 之間的以下差異:
 25. to_number函数
 26. instr函数
 27. 字符串连接符( || )
-28. substr
-29. length
-30. trim/ltrim/rtrim函数
-31. NLSSORT
-32. NLS_INITCAP/ NLS_LOWER/ NLS_UPPER
-33. regexp_replace
-34. regexp_substr
-35. regexp_instr
-36. regexp_like
-37. NVL2
-38. LNNVL
-39. BITAND
-40. REMAINDER
+    * PostgresQL 中的 || 用 法與其他資料庫不同：
+      ````
+      select a|| b from table1;
+      ````
+      當a 或b 其中一個為null 時， 查詢傳回null 
+      必需改用CONCAT()
+
+    * Since version 9.1, PostgreSQL has introduced a built-in string function called CONCAT() to concatenate two or more strings into one.  
+    * https://www.linkedin.com/pulse/tutorial-you-learn-how-use-postgresql-concat-function-akash-kumar-ukefc  
+    * https://www.postgresqltutorial.com/postgresql-string-functions/postgresql-concat-function/  
+  
+28. substr  
+29. length  
+30. trim/ltrim/rtrim函数  
+31. NLSSORT  
+32. NLS_INITCAP/ NLS_LOWER/ NLS_UPPER  
+33. regexp_replace  
+34. regexp_substr  
+35. regexp_instr  
+36. regexp_like  
+37. NVL2  
+38. LNNVL  
+39. BITAND  
+40. REMAINDER  
 41.     
  
 
