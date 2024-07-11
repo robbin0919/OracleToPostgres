@@ -221,4 +221,5 @@ Oracle 和 Postgres 之間的以下差異:
 * https://developer.aliyun.com/search?k=PostgreSQL%E5%92%8COracle%E7%9A%84SQL%E5%B7%AE%E5%BC%82%E5%88%86%E6%9E%90%E4%B9%8B%E4%BA%94&scene=community&page=1
 * https://rojerchen.blogspot.com/2019/09/postgresql-oraclefdw.html
 * https://www.cnblogs.com/ios9/p/15489894.html
+* https://docs.postgresql.tw/the-sql-language/functions-and-operators/data-type-formatting-functions
 * 
